@@ -13,17 +13,14 @@ void Foo::add(int n)
     cout<< val + n<<endl;
 }
 
-ndarray Foo::np_modify(object& p1, object& p2){
-    ndarray nparray = extract<ndarray>(p1);
-    ndarray nparray2 = extract<ndarray>(p2);
-
-    cout << extract<char const *>(str(nparray)) <<endl;
-    double* data_pt = reinterpret_cast<double*>(nparray.get_data());
+ndarray Foo::np_modify(ndarray& p1, ndarray& p2){
+    cout << extract<char const *>(str(p1)) <<endl;
+    double* data_pt = reinterpret_cast<double*>(p1.get_data());
 
     for (int i = 0; i < 20; ++i){
             cout << data_pt[i] << endl;
     }
-    return nparray;
+    return p1;
 }
 
 int Foo::get_val()
