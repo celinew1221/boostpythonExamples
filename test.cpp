@@ -14,12 +14,9 @@ void Foo::add(int n)
 }
 
 ndarray Foo::np_modify(ndarray& p1, ndarray& p2){
-    cout << extract<char const *>(str(p1)) <<endl;
     double* data_pt = reinterpret_cast<double*>(p1.get_data());
-
-    for (int i = 0; i < 20; ++i){
-            cout << data_pt[i] << endl;
-    }
+    cout << p1.shape(0)<<endl;
+    cout << p1.shape(1)<<endl;
     return p1;
 }
 
