@@ -13,7 +13,7 @@ class Foo
         int get_val();
         void set_val(int);
         void print();
-        ndarray np_modify(ndarray&, ndarray&);
+        ndarray np_modify(ndarray&);
     private:
         int val;
         double dval;

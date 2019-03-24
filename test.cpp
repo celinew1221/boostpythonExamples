@@ -13,11 +13,18 @@ void Foo::add(int n)
     cout<< val + n<<endl;
 }
 
-ndarray Foo::np_modify(ndarray& p1, ndarray& p2){
-    double* data_pt = reinterpret_cast<double*>(p1.get_data());
-    cout << p1.shape(0)<<endl;
-    cout << p1.shape(1)<<endl;
-    return p1;
+ndarray Foo::np_modify(ndarray& result){
+    //double data_belong2c[10]; try this to see what happen
+    double* data_belong2c = new double[10]; // need to dynamically allocate, or c++ will destroy this after return
+    for (int i = 0; i<10; ++i){data_belong2c[i] = i;}
+
+    ndarray data_belong2c_np = from_data(data_belong2c, dtype::get_builtin<double>(), boost::python::make_tuple(10),
+                                         boost::python::make_tuple(sizeof(double)), boost::python::object());
+
+    double* result_pt = reinterpret_cast<double*>(result.get_data());
+    result_pt[0] = 2000;    // this will change original result_pt
+
+    return data_belong2c_np;
 }
 
 int Foo::get_val()
