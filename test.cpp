@@ -1,6 +1,29 @@
 
 #include "test.hpp"
 
+void printmat3D(Mat_<float> image_mat, int row, int col, int depth){
+    cout<<"c++ image converted to MAT_<float>"<<endl;
+    for (int k=0; k<depth; ++k) {
+        cout << "channel "<<k<<endl;
+        for (int i = 0; i<row; ++i){
+            for(int j=0; j<col; ++j){
+                cout<<image_mat(i, j, k)<<" ";
+            }
+            cout << endl;
+        }
+    }
+}
+
+void printmat2D(Mat_<float> image_mat, int row, int col){
+    cout<<"c++ image converted to MAT_<float>"<<endl;
+    for (int i = 0; i<row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            cout << image_mat(i, j) << " ";
+        }
+        cout << endl;
+    }
+}
+
 /* Real C++ code */
 Foo::Foo(int n, double x)
 {
@@ -32,23 +55,26 @@ void Foo::mat_eigen_conversion(ndarray& image){
     int row = image.shape(0);
     int col = image.shape(1);
     int depth = image.shape(2);
-    cout << "row: "<<row<<" col: "<<col<<" depth: "<<depth<<endl;
-    // get raw pointer of image and use it to construct mat
-    double* image_pt = reinterpret_cast<double*>(image.get_data());
-    size_t size[3] = {6,3,1};
-    Mat_<double> image_mat(row, col, image_pt, size);
 
-    // print
-    cout<<"c++ image converted to MAT_<double>"<<endl;
-    for (int k=0; k<depth; ++k) {
-        cout << "channel "<<k<<endl;
-        for (int i = 0; i<row; ++i){
-            for(int j=0; j<col; ++j){
-                cout<<image_mat(i, j, k)<<" ";
-            }
-            cout << endl;
-        }
-    }
+    // get raw pointer of image and use it to construct mat
+    float* image_pt = reinterpret_cast<float*>(image.get_data());
+
+    // get them as a whole
+    int size[3] = {2, 2, 3};
+    Mat_<float> image_mat(3, size, image_pt);
+    printmat3D(image_mat, row, col, depth);
+
+    // get them per channel
+    Range ranges[3] = {Range::all(), Range::all(), Range(0, 1)};
+    printmat2D(image_mat(ranges), row, col);
+    ranges[3] = {Range::all(), Range::all(), Range(1, 2)};
+    printmat2D(image_mat(ranges), row, col);
+    ranges[3] = {Range::all(), Range::all(), Range(2, 3)};
+    printmat2D(image_mat(ranges), row, col);
+//    vector<Mat_<float>> image_vector({channel1, channel2, channel3});
+//    Mat image_merge;
+//    merge(image_vector, image_merge); // this does not work properly TODO
+//    printmat(image_merge, row, col, depth);
 }
 
 int Foo::get_val()

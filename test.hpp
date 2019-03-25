@@ -8,10 +8,14 @@
 #include <opencv2/core/eigen.hpp>
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
+#include <vector>
 using namespace boost::python;
 using namespace boost::python::numpy;
 using namespace std;
 using namespace cv;
+
+void printmat3D(Mat_<float>, int, int, int);
+void printmat2D(Mat_<float>, int, int);
 
 class Foo
 {
