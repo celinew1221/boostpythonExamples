@@ -27,6 +27,30 @@ ndarray Foo::np_modify(ndarray& result){
     return data_belong2c_np;
 }
 
+void Foo::mat_eigen_conversion(ndarray& image){
+    // get row and col
+    int row = image.shape(0);
+    int col = image.shape(1);
+    int depth = image.shape(2);
+    cout << "row: "<<row<<" col: "<<col<<" depth: "<<depth<<endl;
+    // get raw pointer of image and use it to construct mat
+    double* image_pt = reinterpret_cast<double*>(image.get_data());
+    size_t size[3] = {6,3,1};
+    Mat_<double> image_mat(row, col, image_pt, size);
+
+    // print
+    cout<<"c++ image converted to MAT_<double>"<<endl;
+    for (int k=0; k<depth; ++k) {
+        cout << "channel "<<k<<endl;
+        for (int i = 0; i<row; ++i){
+            for(int j=0; j<col; ++j){
+                cout<<image_mat(i, j, k)<<" ";
+            }
+            cout << endl;
+        }
+    }
+}
+
 int Foo::get_val()
 {
     return val;
@@ -48,6 +72,7 @@ BOOST_PYTHON_MODULE(myfoo)
     class_<Foo>("Foo", init<int, double>())
         .def("add", &Foo::add)
         .def("np_modify", &Foo::np_modify)
+        .def("mat_eigen_conversion", &Foo::mat_eigen_conversion)
         .def("get_val", &Foo::get_val)
         .def("set_val", &Foo::set_val)
         .def("print", &Foo::print);
