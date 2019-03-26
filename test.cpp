@@ -1,24 +1,22 @@
 
 #include "test.hpp"
 
-void printmat3D(Mat_<float> image_mat, int row, int col, int depth){
-    cout<<"c++ image converted to MAT_<float>"<<endl;
+void printmat3D(Mat image_mat, int row, int col, int depth){
     for (int k=0; k<depth; ++k) {
         cout << "channel "<<k<<endl;
         for (int i = 0; i<row; ++i){
             for(int j=0; j<col; ++j){
-                cout<<image_mat(i, j, k)<<" ";
+                cout<<image_mat.at<Vec3f>(i, j)[k]<<" ";
             }
             cout << endl;
         }
     }
 }
 
-void printmat2D(Mat_<float> image_mat, int row, int col){
-    cout<<"c++ image converted to MAT_<float>"<<endl;
+void printmat2D(Mat image_mat, int row, int col){
     for (int i = 0; i<row; ++i) {
         for (int j = 0; j < col; ++j) {
-            cout << image_mat(i, j) << " ";
+            cout << image_mat.at<float>(i, j) << " ";
         }
         cout << endl;
     }
@@ -45,12 +43,12 @@ ndarray Foo::np_modify(ndarray& result){
                                          boost::python::make_tuple(sizeof(double)), boost::python::object());
 
     double* result_pt = reinterpret_cast<double*>(result.get_data());
-    result_pt[0] = 2000;    // this will change original result_pt
+    result_pt[0] = 2000;    // this will change original result_pt therefore result in python
 
     return data_belong2c_np;
 }
 
-void Foo::mat_eigen_conversion(ndarray& image){
+void Foo::mat_eigen_conversion(ndarray& image, ndarray& ch1, ndarray& ch2, ndarray& ch3, ndarray& warp){
     // get row and col
     int row = image.shape(0);
     int col = image.shape(1);
@@ -58,23 +56,33 @@ void Foo::mat_eigen_conversion(ndarray& image){
 
     // get raw pointer of image and use it to construct mat
     float* image_pt = reinterpret_cast<float*>(image.get_data());
+    float* warp_pt = reinterpret_cast<float*>(warp.get_data());
 
     // get them as a whole
-    int size[3] = {2, 2, 3};
-    Mat_<float> image_mat(3, size, image_pt);
+    cout << "directly convert image to 3D Mat" <<endl;
+    int size[3] = {row, col, depth};
+    Mat image_mat(row, col, CV_32FC3, image_pt);
+    Mat warp_mat(row, col, CV_32FC3, warp_pt);
     printmat3D(image_mat, row, col, depth);
 
     // get them per channel
-    Range ranges[3] = {Range::all(), Range::all(), Range(0, 1)};
-    printmat2D(image_mat(ranges), row, col);
-    ranges[3] = {Range::all(), Range::all(), Range(1, 2)};
-    printmat2D(image_mat(ranges), row, col);
-    ranges[3] = {Range::all(), Range::all(), Range(2, 3)};
-    printmat2D(image_mat(ranges), row, col);
-//    vector<Mat_<float>> image_vector({channel1, channel2, channel3});
-//    Mat image_merge;
-//    merge(image_vector, image_merge); // this does not work properly TODO
-//    printmat(image_merge, row, col, depth);
+    cout << "convert each channel to 2D Mat and its first element to 1000.\nNote this will also change the numpy array" << endl;
+    float* ch1_pt = reinterpret_cast<float*>(ch1.get_data());
+    float* ch2_pt = reinterpret_cast<float*>(ch2.get_data());
+    float* ch3_pt = reinterpret_cast<float*>(ch3.get_data());
+    Mat ch1_mat(row, col, CV_32FC1, ch1_pt);
+    Mat ch2_mat(row, col, CV_32FC1, ch2_pt);
+    Mat ch3_mat(row, col, CV_32FC1, ch3_pt);
+    ch1_mat.at<Vec3f>(0,0)[0] = 1000;
+    printmat2D(ch1_mat, row, col);
+    printmat2D(ch2_mat, row, col);
+    printmat2D(ch3_mat, row, col);
+
+    // merge
+    cout << "Merge the 2D channels into the warp numpy array passed into this function. Note this will change the numpy warp array" << endl;
+    vector<Mat> before_merge = {ch1_mat, ch2_mat, ch3_mat};
+    merge(before_merge, warp_mat);
+    printmat3D(warp_mat, row, col, depth);
 }
 
 int Foo::get_val()

@@ -9,13 +9,14 @@
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
 #include <vector>
+#include <cstdlib>
 using namespace boost::python;
 using namespace boost::python::numpy;
 using namespace std;
 using namespace cv;
 
-void printmat3D(Mat_<float>, int, int, int);
-void printmat2D(Mat_<float>, int, int);
+void printmat3D(Mat, int, int, int);
+void printmat2D(Mat, int, int);
 
 class Foo
 {
@@ -26,7 +27,7 @@ class Foo
         void set_val(int);
         void print();
         ndarray np_modify(ndarray&);
-        void mat_eigen_conversion(ndarray& image);
+        void mat_eigen_conversion(ndarray&, ndarray&, ndarray&, ndarray&, ndarray&);
     private:
         int val;
         double dval;
