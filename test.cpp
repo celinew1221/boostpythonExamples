@@ -164,6 +164,7 @@ void Foo::mat_conversion(ndarray& image, ndarray& ch1, ndarray& ch2, ndarray& ch
     // merge
     cout << "Merge by using merge(). Note this will change the numpy warp array" << endl;
     vector<Mat> before_merge = {ch1_mat, ch2_mat, ch3_mat};
+    vector<Mat_<float>> before_merge_ = {ch1_mat, ch2_mat, ch3_mat};
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     merge(before_merge, warp_mat);
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -171,11 +172,14 @@ void Foo::mat_conversion(ndarray& image, ndarray& ch1, ndarray& ch2, ndarray& ch
 //    printmat3D(warp_mat, row, col, depth);
 
     cout << "Merge by copying element by element using Vec3f"<<endl;
+    before_merge[0].at<float>(0,0) = 2122;
     t1 = high_resolution_clock::now();
+
     for (int k = 0; k < depth; ++k){
+        Mat curr = before_merge[k];
         for(int i = 0; i < row; ++i){
             for(int j = 0; j < col; ++j){
-                warp_mat.at<Vec3f>(i,j)[k] = before_merge[k].at<float>(i,j);
+                warp_mat.at<Vec3f>(i,j)[k] = curr.at<float>(i,j);
             }
         }
     }
@@ -186,9 +190,10 @@ void Foo::mat_conversion(ndarray& image, ndarray& ch1, ndarray& ch2, ndarray& ch
     cout << "Merge by copying element by element using Mat_<float>"<<endl;
     t1 = high_resolution_clock::now();
     for (int k = 0; k < depth; ++k){
+        Mat_<float> curr = before_merge_[k];
         for(int i = 0; i < row; ++i){
             for(int j = 0; j < col; ++j){
-                final_mat(i,j,k) = before_merge[k].at<float>(i,j);
+                final_mat(i,j,k) = curr(i,j);
             }
         }
     }

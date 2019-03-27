@@ -16,8 +16,8 @@ print("\n----------------------------\n--------------------------------\n")
 
 # opencv demo
 print("OPENCV AND EIGEN DEMO")
-image = np.array([[[0, 1, 2],[2, 3, 4]],[[5,6,7],[8,9,10]]], dtype=np.float32)
-final = np.array([[[0, 3, 1],[2, 37, 4]],[[5,6,77],[83,92,10]]], dtype=np.float32)
+image = np.empty((720, 1280, 3), dtype=np.float32)
+final = np.empty((720, 1280, 3), dtype=np.float32)
 ch1 = np.array(image[:,:,0])
 foo.mat_conversion(image, ch1, np.array(image[:,:,1]), np.array(image[:,:,2]), final)
 print("=====Numpy <--> Mat, and change numbers result=====")
