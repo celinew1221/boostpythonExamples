@@ -2,3 +2,4 @@ __pycache__/
 myfoo.dll
 myfoo.so
 .idea
+cmake-build-debug/
