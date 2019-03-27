@@ -1,3 +1,0 @@
-/home/celine/boost_python_numpy_example/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/celine/boost_python_numpy_example/cmake-build-debug/CMakeFiles/boost_python_numpy_example.dir
-/home/celine/boost_python_numpy_example/cmake-build-debug/CMakeFiles/edit_cache.dir

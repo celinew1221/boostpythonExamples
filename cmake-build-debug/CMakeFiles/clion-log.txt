@@ -1,4 +1,0 @@
-/home/celine/.clion/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/celine/boost_python_numpy_example
--- Configuring done
--- Generating done
--- Build files have been written to: /home/celine/boost_python_numpy_example/cmake-build-debug
