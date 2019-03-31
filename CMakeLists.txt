@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(boost_python_numpy_example
-        CMakeLists.txt
-        myfoo.so
+
+add_executable(boostpythonExamples
+        tutorial_n_method_comparison/myfoo.so
         README.MD
         test.cpp
         test.hpp

@@ -1,0 +1,3 @@
+/media/celine/Win10/Users/celin/Bcloud/projects/boostpythonExamples/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/media/celine/Win10/Users/celin/Bcloud/projects/boostpythonExamples/cmake-build-debug/CMakeFiles/boostpythonExamples.dir
+/media/celine/Win10/Users/celin/Bcloud/projects/boostpythonExamples/cmake-build-debug/CMakeFiles/edit_cache.dir

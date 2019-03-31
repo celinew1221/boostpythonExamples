@@ -1,5 +1,5 @@
 
-#include "test.hpp"
+#include "np2c_tut.hpp"
 // TODO: Need to clean this up
 void printmat3D(Mat_<float> image, int row, int col, int depth){
     for (int k=0; k<depth; ++k) {
